@@ -1,0 +1,15 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: stockflow_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - stockflow_mysql_data:/var/lib/mysql
+
+volumes:
+  stockflow_mysql_data:
