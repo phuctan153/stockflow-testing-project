@@ -49,6 +49,22 @@ public class ProductService {
         return mapToProductResponse(product);
     }
 
+    public ProductResponse updateProduct(Long id, ProductRequest request) {
+        validateUpdateProductRequest(id, request);
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+
+        product.setName(request.getName().trim());
+        product.setCategory(request.getCategory().trim());
+        product.setPrice(request.getPrice());
+        product.setStatus(request.getStatus() == null ? ProductStatus.ACTIVE : request.getStatus());
+
+        Product updatedProduct = productRepository.save(product);
+
+        return mapToProductResponse(updatedProduct);
+    }
+
     private void validateCreateProductRequest(ProductRequest request) {
         if (request == null) {
             throw new BusinessException("Product request is required");
@@ -76,6 +92,39 @@ public class ProductService {
 
         if (request.getQuantity() != null && request.getQuantity() < 0) {
             throw new BusinessException("Quantity cannot be negative");
+        }
+    }
+
+    private void validateUpdateProductRequest(Long id, ProductRequest request) {
+        if (request == null) {
+            throw new BusinessException("Product request is required");
+        }
+
+        if (request.getName() == null || request.getName().trim().isEmpty()) {
+            throw new BusinessException("Product name is required");
+        }
+
+        Product existingProductWithSameName = productRepository.findByNameIgnoreCase(request.getName().trim())
+                .orElse(null);
+
+        if (existingProductWithSameName != null && !existingProductWithSameName.getId().equals(id)) {
+            throw new BusinessException("Product name must be unique");
+        }
+
+        if (request.getCategory() == null || request.getCategory().trim().isEmpty()) {
+            throw new BusinessException("Category is required");
+        }
+
+        if (request.getPrice() == null) {
+            throw new BusinessException("Price is required");
+        }
+
+        if (request.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BusinessException("Price must be greater than 0");
+        }
+
+        if (request.getStatus() == null) {
+            throw new BusinessException("Product status is required");
         }
     }
 
