@@ -5,10 +5,12 @@ import com.stockflow.dto.response.ProductResponse;
 import com.stockflow.entity.Product;
 import com.stockflow.enums.ProductStatus;
 import com.stockflow.exception.BusinessException;
+import com.stockflow.exception.ResourceNotFoundException;
 import com.stockflow.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -31,6 +33,20 @@ public class ProductService {
         Product savedProduct = productRepository.save(product);
 
         return mapToProductResponse(savedProduct);
+    }
+
+    public List<ProductResponse> getAllProducts() {
+        return productRepository.findAll()
+                .stream()
+                .map(this::mapToProductResponse)
+                .toList();
+    }
+
+    public ProductResponse getProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+
+        return mapToProductResponse(product);
     }
 
     private void validateCreateProductRequest(ProductRequest request) {
