@@ -65,6 +65,17 @@ public class ProductService {
         return mapToProductResponse(updatedProduct);
     }
 
+    public void deleteProduct(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+
+        if (product.getQuantity() > 0) {
+            throw new BusinessException("Cannot delete product because it has inventory quantity or transaction history");
+        }
+
+        productRepository.delete(product);
+    }
+
     private void validateCreateProductRequest(ProductRequest request) {
         if (request == null) {
             throw new BusinessException("Product request is required");
