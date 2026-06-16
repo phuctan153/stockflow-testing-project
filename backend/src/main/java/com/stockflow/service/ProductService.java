@@ -1,15 +1,22 @@
 package com.stockflow.service;
 
 import com.stockflow.dto.request.ProductRequest;
+import com.stockflow.dto.response.PageResponse;
 import com.stockflow.dto.response.ProductResponse;
 import com.stockflow.entity.Product;
 import com.stockflow.enums.ProductStatus;
 import com.stockflow.exception.BusinessException;
 import com.stockflow.exception.ResourceNotFoundException;
 import com.stockflow.repository.ProductRepository;
+import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,47 +42,51 @@ public class ProductService {
         return mapToProductResponse(savedProduct);
     }
 
-    public List<ProductResponse> getProducts(String keyword, String category, ProductStatus status) {
-        List<Product> products;
+    public PageResponse<ProductResponse> getProducts(
+            String keyword,
+            String category,
+            String status,
+            int page,
+            int size,
+            String sortBy,
+            String sortDirection
+    ) {
+        validatePagination(page, size);
 
-        boolean hasKeyword = keyword != null && !keyword.trim().isEmpty();
-        boolean hasCategory = category != null && !category.trim().isEmpty();
-        boolean hasStatus = status != null;
+        ProductStatus productStatus = parseProductStatus(status);
 
-        if (hasKeyword && hasCategory && hasStatus) {
-            products = productRepository.findByNameContainingIgnoreCaseAndCategoryIgnoreCaseAndStatus(
-                    keyword.trim(),
-                    category.trim(),
-                    status
-            );
-        } else if (hasKeyword && hasCategory) {
-            products = productRepository.findByNameContainingIgnoreCaseAndCategoryIgnoreCase(
-                    keyword.trim(),
-                    category.trim()
-            );
-        } else if (hasKeyword && hasStatus) {
-            products = productRepository.findByNameContainingIgnoreCaseAndStatus(
-                    keyword.trim(),
-                    status
-            );
-        } else if (hasCategory && hasStatus) {
-            products = productRepository.findByCategoryIgnoreCaseAndStatus(
-                    category.trim(),
-                    status
-            );
-        } else if (hasKeyword) {
-            products = productRepository.findByNameContainingIgnoreCase(keyword.trim());
-        } else if (hasCategory) {
-            products = productRepository.findByCategoryIgnoreCase(category.trim());
-        } else if (hasStatus) {
-            products = productRepository.findByStatus(status);
-        } else {
-            products = productRepository.findAll();
-        }
+        Sort sort = buildSort(sortBy, sortDirection);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-        return products.stream()
-                .map(this::mapToProductResponse)
-                .toList();
+        Page<ProductResponse> productPage = productRepository.findAll((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                predicates.add(
+                        criteriaBuilder.like(
+                                criteriaBuilder.lower(root.get("name")),
+                                "%" + keyword.trim().toLowerCase() + "%"
+                        )
+                );
+            }
+
+            if (category != null && !category.trim().isEmpty()) {
+                predicates.add(
+                        criteriaBuilder.equal(
+                                criteriaBuilder.lower(root.get("category")),
+                                category.trim().toLowerCase()
+                        )
+                );
+            }
+
+            if (productStatus != null) {
+                predicates.add(criteriaBuilder.equal(root.get("status"), productStatus));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        }, pageable).map(this::mapToProductResponse);
+
+        return PageResponse.from(productPage);
     }
 
     public ProductResponse getProductById(Long id) {
@@ -186,5 +197,74 @@ public class ProductService {
                 product.getCreatedAt(),
                 product.getUpdatedAt()
         );
+    }
+
+    private ProductStatus parseProductStatus(String status) {
+        if (status == null || status.trim().isEmpty()) {
+            return null;
+        }
+
+        try {
+            return ProductStatus.valueOf(status.trim().toUpperCase());
+        } catch (IllegalArgumentException exception) {
+            throw new BusinessException("Invalid product status. Allowed values are ACTIVE or INACTIVE");
+        }
+    }
+
+    private void validatePagination(int page, int size) {
+        if (page < 0) {
+            throw new BusinessException("Page number must be greater than or equal to 0");
+        }
+
+        if (size <= 0) {
+            throw new BusinessException("Page size must be greater than 0");
+        }
+
+        if (size > 100) {
+            throw new BusinessException("Page size must not exceed 100");
+        }
+    }
+
+    private Sort buildSort(String sortBy, String sortDirection) {
+        String selectedSortBy = normalizeSortBy(sortBy);
+
+        Sort.Direction direction;
+
+        if (sortDirection == null || sortDirection.trim().isEmpty()) {
+            direction = Sort.Direction.DESC;
+        } else {
+            try {
+                direction = Sort.Direction.fromString(sortDirection.trim());
+            } catch (IllegalArgumentException exception) {
+                throw new BusinessException("Invalid sort direction. Allowed values are asc or desc");
+            }
+        }
+
+        return Sort.by(direction, selectedSortBy);
+    }
+
+    private String normalizeSortBy(String sortBy) {
+        if (sortBy == null || sortBy.trim().isEmpty()) {
+            return "createdAt";
+        }
+
+        String selectedSortBy = sortBy.trim();
+
+        List<String> allowedSortFields = List.of(
+                "id",
+                "name",
+                "category",
+                "price",
+                "quantity",
+                "status",
+                "createdAt",
+                "updatedAt"
+        );
+
+        if (!allowedSortFields.contains(selectedSortBy)) {
+            throw new BusinessException("Invalid sort field. Allowed values are id, name, category, price, quantity, status, createdAt, updatedAt");
+        }
+
+        return selectedSortBy;
     }
 }

@@ -2,6 +2,7 @@ package com.stockflow.controller;
 
 import com.stockflow.dto.request.ProductRequest;
 import com.stockflow.dto.response.ApiResponse;
+import com.stockflow.dto.response.PageResponse;
 import com.stockflow.dto.response.ProductResponse;
 import com.stockflow.enums.ProductStatus;
 import com.stockflow.service.ProductService;
@@ -35,20 +36,28 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProductResponse>>> getProducts(
+    public ResponseEntity<ApiResponse<PageResponse<ProductResponse>>> getProducts(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String category,
-            @RequestParam(required = false) ProductStatus status
+            @RequestParam(required = false) String status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDirection
     ) {
-        List<ProductResponse> products = productService.getProducts(keyword, category, status);
-
-        ApiResponse<List<ProductResponse>> response = new ApiResponse<>(
-                true,
-                "Products retrieved successfully",
-                products
+        PageResponse<ProductResponse> products = productService.getProducts(
+                keyword,
+                category,
+                status,
+                page,
+                size,
+                sortBy,
+                sortDirection
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                ApiResponse.success("Products retrieved successfully", products)
+        );
     }
 
     @GetMapping("/{id}")
