@@ -3,6 +3,7 @@ package com.stockflow.controller;
 import com.stockflow.dto.request.ProductRequest;
 import com.stockflow.dto.response.ApiResponse;
 import com.stockflow.dto.response.ProductResponse;
+import com.stockflow.enums.ProductStatus;
 import com.stockflow.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProductResponse>>> getAllProducts() {
-        List<ProductResponse> products = productService.getAllProducts();
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> getProducts(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) ProductStatus status
+    ) {
+        List<ProductResponse> products = productService.getProducts(keyword, category, status);
 
         ApiResponse<List<ProductResponse>> response = new ApiResponse<>(
                 true,

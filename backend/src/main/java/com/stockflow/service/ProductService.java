@@ -35,9 +35,45 @@ public class ProductService {
         return mapToProductResponse(savedProduct);
     }
 
-    public List<ProductResponse> getAllProducts() {
-        return productRepository.findAll()
-                .stream()
+    public List<ProductResponse> getProducts(String keyword, String category, ProductStatus status) {
+        List<Product> products;
+
+        boolean hasKeyword = keyword != null && !keyword.trim().isEmpty();
+        boolean hasCategory = category != null && !category.trim().isEmpty();
+        boolean hasStatus = status != null;
+
+        if (hasKeyword && hasCategory && hasStatus) {
+            products = productRepository.findByNameContainingIgnoreCaseAndCategoryIgnoreCaseAndStatus(
+                    keyword.trim(),
+                    category.trim(),
+                    status
+            );
+        } else if (hasKeyword && hasCategory) {
+            products = productRepository.findByNameContainingIgnoreCaseAndCategoryIgnoreCase(
+                    keyword.trim(),
+                    category.trim()
+            );
+        } else if (hasKeyword && hasStatus) {
+            products = productRepository.findByNameContainingIgnoreCaseAndStatus(
+                    keyword.trim(),
+                    status
+            );
+        } else if (hasCategory && hasStatus) {
+            products = productRepository.findByCategoryIgnoreCaseAndStatus(
+                    category.trim(),
+                    status
+            );
+        } else if (hasKeyword) {
+            products = productRepository.findByNameContainingIgnoreCase(keyword.trim());
+        } else if (hasCategory) {
+            products = productRepository.findByCategoryIgnoreCase(category.trim());
+        } else if (hasStatus) {
+            products = productRepository.findByStatus(status);
+        } else {
+            products = productRepository.findAll();
+        }
+
+        return products.stream()
                 .map(this::mapToProductResponse)
                 .toList();
     }
