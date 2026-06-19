@@ -54,4 +54,15 @@ public class StockInController {
                 ApiResponse.success("Stock-in history retrieved successfully", response)
         );
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<StockTransactionResponse>> getStockInById(
+            @PathVariable Long id
+    ) {
+        StockTransactionResponse response = stockInService.getStockInById(id);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("Stock-in transaction retrieved successfully", response)
+        );
+    }
 }

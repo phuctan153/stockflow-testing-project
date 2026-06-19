@@ -8,6 +8,8 @@ import com.stockflow.enums.ProductStatus;
 import com.stockflow.exception.BusinessException;
 import com.stockflow.exception.ResourceNotFoundException;
 import com.stockflow.repository.ProductRepository;
+import com.stockflow.repository.StockInRepository;
+import com.stockflow.repository.StockOutRepository;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,9 +24,13 @@ import java.util.List;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
+    private final StockInRepository stockInRepository;
+    private final StockOutRepository stockOutRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, StockInRepository stockInRepository, StockOutRepository stockOutRepository) {
         this.productRepository = productRepository;
+        this.stockInRepository = stockInRepository;
+        this.stockOutRepository = stockOutRepository;
     }
 
     public ProductResponse createProduct(ProductRequest request) {
@@ -116,7 +122,10 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 
-        if (product.getQuantity() > 0) {
+        boolean hasStockInHistory = stockInRepository.existsByProduct_Id(id);
+        boolean hasStockOutHistory = stockOutRepository.existsByProduct_Id(id);
+
+        if (product.getQuantity() > 0 || hasStockInHistory || hasStockOutHistory) {
             throw new BusinessException("Cannot delete product because it has inventory quantity or transaction history");
         }
 

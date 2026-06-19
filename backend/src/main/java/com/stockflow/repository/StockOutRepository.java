@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StockOutRepository extends JpaRepository<StockOut, Long>, JpaSpecificationExecutor<StockOut> {
     boolean existsByProductId(Long productId);
+    boolean existsByProduct_Id(Long productId);
 }

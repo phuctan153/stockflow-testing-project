@@ -107,6 +107,13 @@ public class StockInService {
         return PageResponse.from(stockInPage);
     }
 
+    public StockTransactionResponse getStockInById(Long id) {
+        StockIn stockIn = stockInRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Stock-in transaction not found with id: " + id));
+
+        return mapToStockTransactionResponse(stockIn);
+    }
+
     private void validateStockInRequest(StockInRequest request) {
         if (request == null) {
             throw new BusinessException("Stock-in request is required");

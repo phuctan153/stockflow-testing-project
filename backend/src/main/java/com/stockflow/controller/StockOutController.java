@@ -55,4 +55,15 @@ public class StockOutController {
                 ApiResponse.success("Stock-out history retrieved successfully", response)
         );
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<StockTransactionResponse>> getStockOutById(
+            @PathVariable Long id
+    ) {
+        StockTransactionResponse response = stockOutService.getStockOutById(id);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("Stock-out transaction retrieved successfully", response)
+        );
+    }
 }

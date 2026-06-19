@@ -112,6 +112,13 @@ public class StockOutService {
         return PageResponse.from(stockOutPage);
     }
 
+    public StockTransactionResponse getStockOutById(Long id) {
+        StockOut stockOut = stockOutRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Stock-out transaction not found with id: " + id));
+
+        return mapToStockTransactionResponse(stockOut);
+    }
+
     private void validateStockOutRequest(StockOutRequest request) {
         if (request == null) {
             throw new BusinessException("Stock-out request is required");
