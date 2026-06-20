@@ -4,6 +4,7 @@ import com.stockflow.entity.Product;
 import com.stockflow.enums.ProductStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,30 +16,12 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     Optional<Product> findByNameIgnoreCase(String name);
 
-    List<Product> findByNameContainingIgnoreCase(String keyword);
+    long countByStatus(ProductStatus status);
 
-    List<Product> findByCategoryIgnoreCase(String category);
+    long countByQuantityBetween(Integer minQuantity, Integer maxQuantity);
 
-    List<Product> findByStatus(ProductStatus status);
+    long countByQuantity(Integer quantity);
 
-    List<Product> findByNameContainingIgnoreCaseAndCategoryIgnoreCaseAndStatus(
-            String keyword,
-            String category,
-            ProductStatus status
-    );
-
-    List<Product> findByNameContainingIgnoreCaseAndCategoryIgnoreCase(
-            String keyword,
-            String category
-    );
-
-    List<Product> findByNameContainingIgnoreCaseAndStatus(
-            String keyword,
-            ProductStatus status
-    );
-
-    List<Product> findByCategoryIgnoreCaseAndStatus(
-            String category,
-            ProductStatus status
-    );
+    @Query("SELECT COALESCE(SUM(p.quantity), 0) FROM Product p")
+    Long sumTotalQuantity();
 }
