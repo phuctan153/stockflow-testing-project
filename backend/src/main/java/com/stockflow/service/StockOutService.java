@@ -29,10 +29,12 @@ public class StockOutService {
 
     private final StockOutRepository stockOutRepository;
     private final ProductRepository productRepository;
+    private final AuthContextService authContextService;
 
-    public StockOutService(StockOutRepository stockOutRepository, ProductRepository productRepository) {
+    public StockOutService(StockOutRepository stockOutRepository, ProductRepository productRepository, AuthContextService authContextService) {
         this.stockOutRepository = stockOutRepository;
         this.productRepository = productRepository;
+        this.authContextService = authContextService;
     }
 
     @Transactional
@@ -52,13 +54,13 @@ public class StockOutService {
 
         product.setQuantity(product.getQuantity() - request.getQuantity());
 
-        Long temporaryCreatedBy = 1L;
+        Long createdBy = authContextService.getCurrentUserId();
 
         StockOut stockOut = new StockOut(
                 product,
                 request.getQuantity(),
                 request.getReason(),
-                temporaryCreatedBy
+                createdBy
         );
 
         StockOut savedStockOut = stockOutRepository.save(stockOut);

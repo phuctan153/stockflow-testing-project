@@ -28,10 +28,12 @@ import java.util.List;
 public class StockInService {
     private final StockInRepository stockInRepository;
     private final ProductRepository productRepository;
+    private final AuthContextService authContextService;
 
-    public StockInService(StockInRepository stockInRepository, ProductRepository productRepository) {
+    public StockInService(StockInRepository stockInRepository, ProductRepository productRepository, AuthContextService authContextService) {
         this.stockInRepository = stockInRepository;
         this.productRepository = productRepository;
+        this.authContextService = authContextService;
     }
 
     @Transactional
@@ -47,13 +49,13 @@ public class StockInService {
 
         product.setQuantity(product.getQuantity() + request.getQuantity());
 
-        Long temporaryCreatedBy = 1L;
+        Long createdBy = authContextService.getCurrentUserId();
 
         StockIn stockIn = new StockIn(
                 product,
                 request.getQuantity(),
                 request.getNote(),
-                temporaryCreatedBy
+                createdBy
         );
 
         StockIn savedStockIn = stockInRepository.save(stockIn);
