@@ -4,6 +4,7 @@ import ProtectedRoute from '../components/ProtectedRoute';
 import DashboardPage from '../pages/DashboardPage';
 import LoginPage from '../pages/LoginPage';
 import PlaceholderPage from '../pages/PlaceholderPage';
+import ProductListPage from "../pages/ProductListPage.tsx";
 
 function AppRoutes() {
     return (
@@ -20,16 +21,7 @@ function AppRoutes() {
             >
                 <Route index element={<Navigate to="/dashboard" replace />} />
                 <Route path="dashboard" element={<DashboardPage />} />
-
-                <Route
-                    path="products"
-                    element={
-                        <PlaceholderPage
-                            title="Products"
-                            description="Product list, search, filter, create, update and delete will be implemented in the next tasks."
-                        />
-                    }
-                />
+                <Route path="products" element={<ProductListPage />} />
 
                 <Route
                     path="stock-in/create"

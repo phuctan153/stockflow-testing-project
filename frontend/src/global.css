@@ -176,3 +176,16 @@ body {
         display: none;
     }
 }
+
+.filter-card {
+    border-radius: 16px;
+}
+
+.ant-table-wrapper .ant-table {
+    border-radius: 14px;
+}
+
+.ant-table-thead > tr > th {
+    background: #f8fafc !important;
+    font-weight: 700 !important;
+}
