@@ -131,3 +131,48 @@ body {
     background: #f8fafc;
     text-align: center;
 }
+
+.page-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.stat-card {
+    border-radius: 18px;
+    min-height: 150px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.stat-card .ant-statistic-title {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.stat-card .ant-statistic-content {
+    font-weight: 700;
+}
+
+.warning-card {
+    background: linear-gradient(135deg, #ffffff 0%, #fff7ed 100%);
+}
+
+.danger-card {
+    background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+}
+
+@media (max-width: 768px) {
+    .page-heading {
+        flex-direction: column;
+    }
+
+    .app-content {
+        margin: 12px;
+        padding: 16px;
+    }
+
+    .user-info {
+        display: none;
+    }
+}
