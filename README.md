@@ -1,25 +1,45 @@
-# StockFlow
+# StockFlow – Mini Inventory Management System
 
-StockFlow is a mini inventory management system designed for small businesses to manage products, stock-in transactions, stock-out transactions, and inventory reports.
+StockFlow is a mini inventory management system built as a personal Tester/QC portfolio project.
 
-This project is built as a testing portfolio project. It will include:
-
-- Backend API
-- Frontend UI
-- Manual testing documents
-- API testing assets
-- Database testing checklist
-- Basic automation testing
-
-## Main Modules
-
-- Authentication
-- Dashboard
-- Product Management
-- Stock-In Management
-- Stock-Out Management
-- Inventory Report
+The project is designed to support:
+- Manual testing
+- API testing with Postman
+- Database testing with MySQL
+- Basic automation testing in later phases
 
 ## Tech Stack
 
-The tech stack will be added gradually as each module is implemented.
+### Backend
+- Java
+- Spring Boot
+- Spring Web
+- Spring Data JPA
+- Spring Security
+- JWT Authentication
+- MySQL
+- Maven
+- Swagger/OpenAPI
+- Docker Compose
+
+### Frontend
+- React + TypeScript + Vite planned
+
+### Testing
+- Manual test cases planned
+- Postman API collection planned
+- Database testing checklist planned
+- Automation testing planned
+
+## Project Structure
+
+```text
+stockflow-testing-project/
+├── backend/
+├── frontend/
+├── automation/
+├── docs/
+├── postman/
+├── docker-compose.yml
+├── .env.example
+└── README.md
