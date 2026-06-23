@@ -29,3 +29,18 @@ export interface ProductSearchParams {
     sortBy?: string;
     sortDirection?: 'asc' | 'desc';
 }
+
+export interface CreateProductRequest {
+    name: string;
+    category: string;
+    price: number;
+    quantity: number;
+    status: ProductStatus;
+}
+
+export interface UpdateProductRequest {
+    name: string;
+    category: string;
+    price: number;
+    status: ProductStatus;
+}

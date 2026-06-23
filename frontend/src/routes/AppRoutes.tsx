@@ -5,6 +5,8 @@ import DashboardPage from '../pages/DashboardPage';
 import LoginPage from '../pages/LoginPage';
 import PlaceholderPage from '../pages/PlaceholderPage';
 import ProductListPage from "../pages/ProductListPage.tsx";
+import AdminRoute from "../components/AdminRoute.tsx";
+import ProductFormPage from "../pages/ProductFormPage.tsx";
 
 function AppRoutes() {
     return (
@@ -22,6 +24,24 @@ function AppRoutes() {
                 <Route index element={<Navigate to="/dashboard" replace />} />
                 <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="products" element={<ProductListPage />} />
+
+                <Route
+                    path="products/create"
+                    element={
+                        <AdminRoute>
+                            <ProductFormPage />
+                        </AdminRoute>
+                    }
+                />
+
+                <Route
+                    path="products/edit/:id"
+                    element={
+                        <AdminRoute>
+                            <ProductFormPage />
+                        </AdminRoute>
+                    }
+                />
 
                 <Route
                     path="stock-in/create"

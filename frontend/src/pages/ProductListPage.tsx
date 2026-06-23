@@ -24,12 +24,14 @@ import type { Product, ProductStatus } from '../types/product';
 import { formatCurrency } from '../utils/formatCurrency';
 import { formatDateTime } from '../utils/formatDate';
 import { getAuthUser } from '../utils/authStorage';
+import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 
 function ProductListPage() {
     const authUser = getAuthUser();
     const isAdmin = authUser?.role === 'ADMIN';
+    const navigate = useNavigate();
 
     const [products, setProducts] = useState<Product[]>([]);
     const [keyword, setKeyword] = useState('');
@@ -195,9 +197,7 @@ function ProductListPage() {
                 <Space>
                     <Button
                         icon={<EditOutlined />}
-                        onClick={() => {
-                            message.info('Edit page will be implemented in the next task');
-                        }}
+                        onClick={() => navigate(`/products/edit/${record.id}`)}
                     >
                         Edit
                     </Button>
@@ -228,9 +228,7 @@ function ProductListPage() {
                     <Button
                         type="primary"
                         icon={<PlusOutlined />}
-                        onClick={() => {
-                            message.info('Create product page will be implemented in the next task');
-                        }}
+                        onClick={() => navigate('/products/create')}
                     >
                         Add Product
                     </Button>
