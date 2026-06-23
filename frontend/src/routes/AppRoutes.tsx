@@ -3,7 +3,6 @@ import AppLayout from '../components/AppLayout';
 import ProtectedRoute from '../components/ProtectedRoute';
 import DashboardPage from '../pages/DashboardPage';
 import LoginPage from '../pages/LoginPage';
-import PlaceholderPage from '../pages/PlaceholderPage';
 import ProductListPage from "../pages/ProductListPage.tsx";
 import AdminRoute from "../components/AdminRoute.tsx";
 import ProductFormPage from "../pages/ProductFormPage.tsx";
@@ -11,6 +10,7 @@ import StockInPage from "../pages/StockInPage.tsx";
 import StockOutPage from "../pages/StockOutPage.tsx";
 import StockOutHistoryPage from "../pages/StockOutHistoryPage.tsx";
 import StockInHistoryPage from "../pages/StockInHistoryPage.tsx";
+import InventoryReportPage from "../pages/InventoryReportPage.tsx";
 
 function AppRoutes() {
     return (
@@ -51,16 +51,8 @@ function AppRoutes() {
                 <Route path="stock-out/create" element={<StockOutPage />} />
                 <Route path="stock-in/history" element={<StockInHistoryPage />} />
                 <Route path="stock-out/history" element={<StockOutHistoryPage />} />
+                <Route path="inventory/report" element={<InventoryReportPage />} />
 
-                <Route
-                    path="inventory/report"
-                    element={
-                        <PlaceholderPage
-                            title="Inventory Report"
-                            description="Inventory report page will be implemented later."
-                        />
-                    }
-                />
             </Route>
 
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
