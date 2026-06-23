@@ -32,9 +32,15 @@ function AppLayout() {
         const path = location.pathname;
 
         if (path.startsWith('/products')) return '/products';
-        if (path.startsWith('/stock-in')) return '/stock-in/create';
-        if (path.startsWith('/stock-out')) return '/stock-out/create';
+
+        if (path.startsWith('/stock-in/history')) return '/stock-in/history';
+        if (path.startsWith('/stock-out/history')) return '/stock-out/history';
+
+        if (path.startsWith('/stock-in/create')) return '/stock-in/create';
+        if (path.startsWith('/stock-out/create')) return '/stock-out/create';
+
         if (path.startsWith('/inventory')) return '/inventory/report';
+        if (path.startsWith('/dashboard')) return '/dashboard';
 
         return '/dashboard';
     })();
