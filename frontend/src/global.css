@@ -199,3 +199,51 @@ body {
 .form-note {
     margin-bottom: 20px;
 }
+
+.stock-form-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 720px) minmax(280px, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.stock-info-card {
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.info-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.quantity-preview {
+    margin: 0 !important;
+    color: #2563eb !important;
+}
+
+.textarea-input {
+    width: 100%;
+    min-height: 96px;
+    padding: 10px 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    outline: none;
+}
+
+.textarea-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+}
+
+@media (max-width: 992px) {
+    .stock-form-grid {
+        grid-template-columns: 1fr;
+    }
+}

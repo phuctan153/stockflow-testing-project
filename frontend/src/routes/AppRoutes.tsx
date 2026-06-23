@@ -7,6 +7,7 @@ import PlaceholderPage from '../pages/PlaceholderPage';
 import ProductListPage from "../pages/ProductListPage.tsx";
 import AdminRoute from "../components/AdminRoute.tsx";
 import ProductFormPage from "../pages/ProductFormPage.tsx";
+import StockInPage from "../pages/StockInPage.tsx";
 
 function AppRoutes() {
     return (
@@ -43,15 +44,7 @@ function AppRoutes() {
                     }
                 />
 
-                <Route
-                    path="stock-in/create"
-                    element={
-                        <PlaceholderPage
-                            title="Stock In"
-                            description="Create stock-in transaction page will be implemented later."
-                        />
-                    }
-                />
+                <Route path="stock-in/create" element={<StockInPage />} />
 
                 <Route
                     path="stock-out/create"
