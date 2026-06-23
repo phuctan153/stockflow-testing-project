@@ -8,6 +8,7 @@ import ProductListPage from "../pages/ProductListPage.tsx";
 import AdminRoute from "../components/AdminRoute.tsx";
 import ProductFormPage from "../pages/ProductFormPage.tsx";
 import StockInPage from "../pages/StockInPage.tsx";
+import StockOutPage from "../pages/StockOutPage.tsx";
 
 function AppRoutes() {
     return (
@@ -45,16 +46,7 @@ function AppRoutes() {
                 />
 
                 <Route path="stock-in/create" element={<StockInPage />} />
-
-                <Route
-                    path="stock-out/create"
-                    element={
-                        <PlaceholderPage
-                            title="Stock Out"
-                            description="Create stock-out transaction page will be implemented later."
-                        />
-                    }
-                />
+                <Route path="stock-out/create" element={<StockOutPage />} />
 
                 <Route
                     path="stock-in/history"

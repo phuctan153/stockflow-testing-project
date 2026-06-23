@@ -247,3 +247,7 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+.danger-text {
+    color: #dc2626 !important;
+}
