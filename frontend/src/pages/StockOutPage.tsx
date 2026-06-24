@@ -206,11 +206,20 @@ function StockOutPage() {
                             rules={[{ required: true, message: 'Product is required' }]}
                         >
                             <Select
+                                id="stock-out-product-select"
+                                data-testid="stock-out-product-select"
+                                className="stock-out-product-select"
+                                popupClassName="stock-out-product-dropdown"
                                 showSearch
                                 placeholder="Select active product"
                                 options={productOptions}
                                 onChange={handleProductChange}
                                 optionFilterProp="label"
+                                filterOption={(input, option) =>
+                                    String(option?.label ?? "")
+                                        .toLowerCase()
+                                        .includes(input.toLowerCase())
+                                }
                             />
                         </Form.Item>
 
@@ -245,6 +254,7 @@ function StockOutPage() {
                             ]}
                         >
                             <InputNumber
+                                id="stock-out-quantity-input"
                                 min={1}
                                 style={{ width: '100%' }}
                                 placeholder="Example: 3"
@@ -254,6 +264,7 @@ function StockOutPage() {
 
                         <Form.Item label="Reason" name="reason">
                             <TextArea
+                                id="stock-out-reason-input"
                                 placeholder="Example: Sold to customer"
                                 rows={4}
                             />
@@ -261,6 +272,7 @@ function StockOutPage() {
 
                         <Space>
                             <Button
+                                id="stock-out-submit-button"
                                 type="primary"
                                 htmlType="submit"
                                 icon={<ExportOutlined />}
