@@ -4,6 +4,7 @@
     <test name="Login Tests">
         <classes>
             <class name="com.stockflow.tests.LoginTest"/>
+            <class name="com.stockflow.tests.ProductTest"/>
         </classes>
     </test>
 </suite>
