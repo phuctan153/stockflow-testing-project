@@ -51,4 +51,22 @@ public class LoginTest extends BaseTest {
                 "User should stay on login page when password is invalid. Current URL: " + driver.getCurrentUrl()
         );
     }
+
+    @Test(description = "ATC-003: Verify login validation with empty username and password")
+    public void loginWithEmptyUsernameAndPasswordShowsValidation() {
+        LoginPage loginPage = new LoginPage(driver);
+
+        loginPage.waitForLoginPageLoaded();
+        loginPage.clickLoginButton();
+
+        String actualError = loginPage.getErrorMessage();
+
+        Assert.assertTrue(
+                actualError.toLowerCase().contains("username")
+                        || actualError.toLowerCase().contains("password")
+                        || actualError.toLowerCase().contains("required")
+                        || actualError.toLowerCase().contains("enter"),
+                "Validation message for empty username/password should be displayed. Actual: " + actualError
+        );
+    }
 }

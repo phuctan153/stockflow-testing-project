@@ -226,6 +226,7 @@ function ProductListPage() {
 
                 {isAdmin && (
                     <Button
+                        id="add-product-button"
                         type="primary"
                         icon={<PlusOutlined />}
                         onClick={() => navigate('/products/create')}
@@ -238,6 +239,7 @@ function ProductListPage() {
             <Card className="page-section filter-card">
                 <Space wrap>
                     <Input
+                        id="product-search-input"
                         allowClear
                         placeholder="Search product name"
                         prefix={<SearchOutlined />}

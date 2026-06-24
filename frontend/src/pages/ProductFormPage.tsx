@@ -218,7 +218,9 @@ function ProductFormPage() {
                             { max: 100, message: 'Product name must not exceed 100 characters' },
                         ]}
                     >
-                        <Input placeholder="Example: Laptop Dell Inspiron" />
+                        <Input
+                            id="product-name-input"
+                            placeholder="Example: Laptop Dell Inspiron" />
                     </Form.Item>
 
                     <Form.Item
@@ -229,7 +231,9 @@ function ProductFormPage() {
                             { max: 50, message: 'Category must not exceed 50 characters' },
                         ]}
                     >
-                        <Input placeholder="Example: Laptop" />
+                        <Input
+                            id="product-category-input"
+                            placeholder="Example: Laptop" />
                     </Form.Item>
 
                     <Form.Item
@@ -245,6 +249,7 @@ function ProductFormPage() {
                         ]}
                     >
                         <InputNumber
+                            id="product-price-input"
                             min={1}
                             style={{ width: '100%' }}
                             placeholder="Example: 15000000"
@@ -266,6 +271,7 @@ function ProductFormPage() {
                             ]}
                         >
                             <InputNumber
+                                id="product-quantity-input"
                                 min={0}
                                 style={{ width: '100%' }}
                                 placeholder="Example: 10"
@@ -288,6 +294,7 @@ function ProductFormPage() {
 
                     <Space>
                         <Button
+                            id="product-submit-button"
                             type="primary"
                             htmlType="submit"
                             icon={<SaveOutlined />}
