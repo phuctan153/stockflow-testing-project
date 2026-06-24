@@ -201,11 +201,20 @@ function StockInPage() {
                             rules={[{ required: true, message: 'Product is required' }]}
                         >
                             <Select
+                                id="stock-in-product-select"
+                                data-testid="stock-in-product-select"
+                                className="stock-in-product-select"
+                                popupClassName="stock-in-product-dropdown"
                                 showSearch
                                 placeholder="Select active product"
                                 options={productOptions}
                                 onChange={handleProductChange}
                                 optionFilterProp="label"
+                                filterOption={(input, option) =>
+                                    String(option?.label ?? "")
+                                        .toLowerCase()
+                                        .includes(input.toLowerCase())
+                                }
                             />
                         </Form.Item>
 
@@ -222,6 +231,7 @@ function StockInPage() {
                             ]}
                         >
                             <InputNumber
+                                id="stock-in-quantity-input"
                                 min={1}
                                 style={{ width: '100%' }}
                                 placeholder="Example: 5"
@@ -230,6 +240,7 @@ function StockInPage() {
 
                         <Form.Item label="Note" name="note">
               <textarea
+                  id="stock-in-note-input"
                   className="textarea-input"
                   placeholder="Example: Import from supplier"
                   rows={4}
@@ -238,6 +249,7 @@ function StockInPage() {
 
                         <Space>
                             <Button
+                                id="stock-in-submit-button"
                                 type="primary"
                                 htmlType="submit"
                                 icon={<ImportOutlined />}
