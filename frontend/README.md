@@ -1,73 +1,125 @@
-# React + TypeScript + Vite
+# StockFlow Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This folder contains the React frontend for **StockFlow – Mini Inventory Management System**.
 
-Currently, two official plugins are available:
+The frontend provides the user interface for login, dashboard, product management, stock-in, stock-out, transaction history, and inventory report.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 1. Technology Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Item | Technology |
+|---|---|
+| Library | React |
+| Language | TypeScript |
+| Build Tool | Vite |
+| UI Library | Ant Design |
+| Routing | React Router |
+| API Client | Axios |
+| Date Utility | Day.js |
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 2. Main Pages
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Page | Route | Description |
+|---|---|---|
+| Login | `/login` | Login with Admin or Staff account |
+| Dashboard | `/dashboard` | View inventory summary cards |
+| Product List | `/products` | View, search, filter, edit, and delete products |
+| Create Product | `/products/create` | Admin creates a new product |
+| Edit Product | `/products/edit/:id` | Admin updates product information |
+| Stock-In | `/stock-in/create` | Admin/Staff creates stock-in transaction |
+| Stock-Out | `/stock-out/create` | Admin/Staff creates stock-out transaction |
+| Stock-In History | `/stock-in/history` | View stock-in history |
+| Stock-Out History | `/stock-out/history` | View stock-out history |
+| Inventory Report | `/inventory/report` | View inventory report and stock status |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 3. Role-Based UI Behavior
+
+| Role | Permission |
+|---|---|
+| Admin | Can create, update, delete, and view products; can create stock-in/out; can view reports |
+| Staff | Can view products; can create stock-in/out; can view reports; cannot create/update/delete products |
+
+---
+
+## 4. Local Configuration
+
+The frontend connects to the backend API at:
+
+```text
+http://localhost:8080
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Frontend runs locally at:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+http://localhost:3000
 ```
+
+---
+
+## 5. How to Run
+
+Open terminal in the frontend folder:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run development server:
+
+```bash
+npm run dev
+```
+
+Build production bundle:
+
+```bash
+npm run build
+```
+
+Preview production build:
+
+```bash
+npm run preview
+```
+
+---
+
+## 6. Test Accounts
+
+| Username | Password | Role |
+|---|---|---|
+| admin | 123456 | ADMIN |
+| staff | 123456 | STAFF |
+
+---
+
+## 7. Notes for Testing
+
+Before testing the frontend, make sure the following services are running:
+
+1. MySQL database
+2. StockFlow backend at `http://localhost:8080`
+3. StockFlow frontend at `http://localhost:3000`
+
+Recommended frontend smoke test flow:
+
+1. Login as Admin.
+2. View dashboard.
+3. Create a product.
+4. Search product by name.
+5. Create stock-in transaction.
+6. Create stock-out transaction.
+7. View inventory report.
+8. Login as Staff and verify product create/update/delete actions are not available.

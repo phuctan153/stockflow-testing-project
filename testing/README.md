@@ -6,7 +6,9 @@ StockFlow is a mini inventory management system built as a personal QA/Tester po
 
 The system supports product management, stock-in transactions, stock-out transactions, dashboard summary, inventory report, transaction history, and role-based access control.
 
-This `testing` folder contains all testing artifacts created for the StockFlow project, including requirement analysis, test plan, test scenarios, manual test cases, bug reports, test execution report, API testing documents, database testing documents, and future automation testing documents.
+This `testing` folder contains all testing artifacts created for the StockFlow project, including requirement analysis, test plan, test scenarios, manual test cases, bug reports, test execution report, API testing documents, database testing documents, and automation testing documents.
+
+---
 
 ## 2. Testing Objectives
 
@@ -19,6 +21,9 @@ The main objectives of testing are:
 - Validate UI behavior, form validation, and error messages.
 - Verify API response format, authentication, authorization, and business logic.
 - Verify database records and data integrity after key actions.
+- Verify stable regression flows using UI automation.
+
+---
 
 ## 3. Testing Scope
 
@@ -36,6 +41,7 @@ The main objectives of testing are:
 - UI Validation
 - API Testing
 - Database Testing
+- UI Automation Testing
 
 ### 3.2 Out of Scope
 
@@ -53,6 +59,8 @@ The following features are not included in StockFlow version 1:
 - Multi-warehouse management
 - Payment management
 
+---
+
 ## 4. Test Types
 
 | Test Type | Purpose |
@@ -63,8 +71,11 @@ The following features are not included in StockFlow version 1:
 | Role-Based Access Testing | Verify Admin and Staff permissions |
 | API Testing | Verify endpoints, request body, response body, status codes, authentication, and authorization |
 | Database Testing | Verify product data, transaction records, and inventory quantity changes |
+| Automation Testing | Verify stable regression flows using Selenium |
 | Regression Testing | Re-test main flows after bug fixes or changes |
 | Smoke Testing | Quickly verify that major features work before detailed testing |
+
+---
 
 ## 5. Test Environment
 
@@ -75,10 +86,13 @@ The following features are not included in StockFlow version 1:
 | Frontend | React, TypeScript, Vite, Ant Design |
 | Database | MySQL |
 | API Tool | Postman |
+| Automation Tool | Selenium Java, TestNG |
 | Browser | Google Chrome |
 | Backend URL | `http://localhost:8080` |
 | Frontend URL | `http://localhost:3000` |
 | Swagger URL | `http://localhost:8080/swagger-ui/index.html` |
+
+---
 
 ## 6. Test Accounts
 
@@ -87,9 +101,9 @@ The following features are not included in StockFlow version 1:
 | admin | 123456 | ADMIN | Can manage products and inventory transactions |
 | staff | 123456 | STAFF | Can view products and create stock-in/stock-out transactions |
 
-## 7. Folder Structure
+---
 
-The testing folder is organized as follows:
+## 7. Folder Structure
 
 | Folder | Purpose |
 |---|---|
@@ -99,23 +113,25 @@ The testing folder is organized as follows:
 | `03_test_cases/` | Manual test cases and test data |
 | `04_bug_reports/` | Bug report template and sample bug reports |
 | `05_test_execution/` | Test execution result and summary report |
-| `06_api_testing/` | API test cases, checklist, and report |
-| `07_database_testing/` | Database checklist and SQL validation |
-| `08_automation_testing/` | Automation testing documents for future Selenium tests |
+| `06_api_testing/` | Postman guide and API execution summary |
+| `07_automation_testing/` | Automation testing documents |
+
+---
 
 ## 8. Testing Deliverables
 
-| Folder | Deliverable | Description |
-|---|---|---|
-| 00_requirement | Requirement documents | Requirement summary and requirement traceability |
-| 01_test_plan | Test plan | Scope, strategy, environment, risks, entry criteria, and exit criteria |
-| 02_test_scenarios | Test scenarios | High-level scenarios grouped by module |
-| 03_test_cases | Manual test cases | Detailed manual test cases with steps, data, and expected results |
-| 04_bug_reports | Bug reports | Bug report template and sample bug reports |
-| 05_test_execution | Test execution report | Test execution status, pass/fail summary, and final conclusion |
-| 06_api_testing | API testing documents | API test cases, checklist, and report |
-| 07_database_testing | Database testing documents | SQL validation and database testing checklist |
-| 08_automation_testing | Automation testing documents | Automation plan, automation cases, and report for future Selenium tests |
+| Folder | Deliverable | Description | Status |
+|---|---|---|---|
+| 00_requirement | Requirement documents | Requirement summary and requirement traceability | Completed |
+| 01_test_plan | Test plan | Scope, strategy, environment, risks, entry criteria, and exit criteria | Completed |
+| 02_test_scenarios | Test scenarios | High-level scenarios grouped by module | Completed |
+| 03_test_cases | Manual test cases | Detailed manual test cases with steps, data, and expected results | Completed |
+| 04_bug_reports | Bug reports | Bug report template and sample bug reports | Completed |
+| 05_test_execution | Test execution report | Test execution status, pass/fail summary, and final conclusion | Completed |
+| 06_api_testing | API testing documents | Postman guide and API execution summary | Completed |
+| 07_automation_testing | Automation testing documents | Automation plan, automation cases, and report | Completed |
+
+---
 
 ## 9. Main Business Rules to Test
 
@@ -137,6 +153,8 @@ The testing folder is organized as follows:
 | BR-014 | User cannot access protected pages without login |
 | BR-015 | User cannot access Admin-only pages as Staff |
 
+---
+
 ## 10. Main Modules Covered
 
 | Module | Description |
@@ -150,22 +168,56 @@ The testing folder is organized as follows:
 | Inventory Report | View inventory status and filter report data |
 | Role-Based Access | Verify Admin and Staff permissions |
 
-## 11. Testing Status
+---
+
+## 11. API Testing Result
+
+Postman collection location:
+
+```text
+postman/StockFlow_API_Collection.postman_collection.json
+```
+
+Postman environment location:
+
+```text
+postman/StockFlow_Local_Environment.postman_environment.json
+```
+
+| Result | Count |
+|---|---:|
+| Total Requests | 36 |
+| Passed | 36 |
+| Failed | 0 |
+| Blocked | 0 |
+| Not Run | 0 |
+
+Detailed report:
+
+```text
+testing/06_api_testing/API_Test_Execution_Summary.md
+```
+
+---
+
+## 12. Testing Status
 
 | Area | Status |
 |---|---|
-| Requirement Review | Planned |
-| Test Plan | Planned |
-| Test Scenarios | Planned |
-| Manual Test Cases | Planned |
-| Bug Reports | Planned |
-| Test Execution | Planned |
-| API Testing | Planned |
-| Database Testing | Planned |
-| Automation Testing | Planned for later |
+| Requirement Review | Completed |
+| Test Plan | Completed |
+| Test Scenarios | Completed |
+| Manual Test Cases | Completed |
+| Bug Reports | Completed |
+| Test Execution | Completed |
+| API Testing | Completed |
+| Database Testing | Completed |
+| Automation Testing | Completed |
 
-## 12. Notes
+---
 
-This testing portfolio is designed to demonstrate practical QA skills, including requirement analysis, test design, manual test execution, API testing, database validation, defect reporting, and future automation testing.
+## 13. Notes
+
+This testing portfolio demonstrates practical QA skills, including requirement analysis, test design, manual test execution, API testing, database validation, defect reporting, and UI automation testing.
 
 The project is suitable for showcasing manual testing, API testing, database testing, and basic automation testing ability in a fresher QA/Tester portfolio.
