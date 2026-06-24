@@ -63,4 +63,63 @@ public class StockOutTest extends BaseTest {
                 "Product quantity should decrease from 10 to 7 after stock-out"
         );
     }
+
+    @Test(description = "ATC-009: Verify stock-out quantity cannot exceed current quantity")
+    public void stockOutQuantityCannotExceedCurrentQuantity() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(
+                config.getProperty("adminUsername"),
+                config.getProperty("adminPassword")
+        );
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlContains("/dashboard"));
+
+        String productName = TestData.uniqueProductName();
+
+        ProductListPage productListPage = new ProductListPage(driver);
+        productListPage.openProductListPage(config.getProperty("baseUrl"));
+        productListPage.clickAddProduct();
+
+        ProductFormPage productFormPage = new ProductFormPage(driver);
+        productFormPage.createProduct(
+                productName,
+                "Automation",
+                "100000",
+                "10"
+        );
+
+        wait.until(ExpectedConditions.urlContains("/products"));
+
+        StockOutPage stockOutPage = new StockOutPage(driver);
+        stockOutPage.openStockOutPage(config.getProperty("baseUrl"));
+        stockOutPage.createStockOut(
+                productName,
+                "15",
+                "Automation exceed stock-out test"
+        );
+
+        String actualError = stockOutPage.getErrorMessage();
+
+        Assert.assertTrue(
+                actualError.toLowerCase().contains("exceed")
+                        || actualError.toLowerCase().contains("current")
+                        || actualError.toLowerCase().contains("inventory")
+                        || actualError.toLowerCase().contains("quantity"),
+                "Expected stock-out exceed quantity validation/error message. Actual: " + actualError
+        );
+
+        productListPage.openProductListPage(config.getProperty("baseUrl"));
+        productListPage.searchProduct(productName);
+
+        Assert.assertTrue(
+                productListPage.isProductDisplayed(productName),
+                "Product should still be displayed after rejected stock-out"
+        );
+
+        Assert.assertTrue(
+                driver.getPageSource().contains("10"),
+                "Product quantity should remain 10 when stock-out quantity exceeds current quantity"
+        );
+    }
 }

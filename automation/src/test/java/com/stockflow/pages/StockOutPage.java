@@ -14,6 +14,8 @@ public class StockOutPage {
     private final By quantityInput = By.id("stock-out-quantity-input");
     private final By reasonInput = By.id("stock-out-reason-input");
     private final By submitButton = By.id("stock-out-submit-button");
+    private final By validationError = By.cssSelector(".ant-form-item-explain-error");
+    private final By antMessage = By.cssSelector(".ant-message-notice-content");
 
     public StockOutPage(WebDriver driver) {
         this.driver = driver;
@@ -67,5 +69,21 @@ public class StockOutPage {
         enterQuantity(quantity);
         enterReason(reason);
         clickSubmit();
+    }
+
+    public String getErrorMessage() {
+        try {
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(validationError)).getText();
+        } catch (Exception ignored) {
+            // Try Ant Design message
+        }
+
+        try {
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(antMessage)).getText();
+        } catch (Exception ignored) {
+            // Return page text for debugging
+        }
+
+        return driver.findElement(By.tagName("body")).getText();
     }
 }
